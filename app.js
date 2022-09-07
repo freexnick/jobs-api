@@ -29,6 +29,15 @@ app.use(
   })
 );
 
+const swagger = require("swagger-ui-express");
+const yaml = require("yamljs");
+const swaggerDocument = yaml.load("./swagger.yaml");
+
+app.get("/", (req, res) => {
+  res.send('<h1>jobs API</h1><a href="/api/docs">Documentation</a>');
+});
+app.use("/api/docs", swagger.serve, swagger.setup(swaggerDocument));
+
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 
